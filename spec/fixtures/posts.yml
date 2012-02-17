@@ -1,0 +1,4 @@
+one:
+  id: 1
+  body: This is blog post one
+  author_id: 1

@@ -1,0 +1,5 @@
+author:
+  id: 1
+  email: author@domain.com
+  password: secret
+  password_confirmation: secret

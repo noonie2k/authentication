@@ -19,13 +19,21 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe UsersController do
+  before(:each) do
+    @login_user = User.create(
+      :email => 'login_user@domain.com',
+      :password => 'secret',
+      :password_confirmation => 'secret'
+    )
+    session[:user_id] = @login_user.id
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
     {
-      :email => 'e@mail.com',
+      :email => 'user@domain.com',
       :password => 'secret',
       :password_confirmation => 'secret'
     }
@@ -35,21 +43,23 @@ describe UsersController do
   # in order to pass any filters (e.g. authentication) defined in
   # UsersController. Be sure to keep this updated too.
   def valid_session
-    {}
+    {
+      :user_id => @login_user.id
+    }
   end
 
   describe "GET index" do
     it "assigns all users as @users" do
       user = User.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:users).should eq([user])
+      get :index, valid_session
+      assigns(:users).should eq([@login_user, user])
     end
   end
 
   describe "GET show" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
-      get :show, {:id => user.to_param}, valid_session
+      get :show, {:id => user.id}, valid_session
       assigns(:user).should eq(user)
     end
   end
@@ -64,7 +74,7 @@ describe UsersController do
   describe "GET edit" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
-      get :edit, {:id => user.to_param}, valid_session
+      get :edit, {:id => user.id}, valid_session
       assigns(:user).should eq(user)
     end
   end

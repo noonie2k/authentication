@@ -73,3 +73,11 @@ end
 # loaded once.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+def create_user
+  User.create(
+    :email => 'e@mail.com',
+    :password => 'secret',
+    :password_confirmation => 'secret'
+  )
+end
